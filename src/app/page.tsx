@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { IconType } from "react-icons";
-import { FaRegStar } from "react-icons/fa";
+import { FaRegStar, FaStar } from "react-icons/fa";
 import { FaArrowTrendUp } from "react-icons/fa6";
+import { IoLogoGameControllerB } from "react-icons/io";
 import { IoFlash } from "react-icons/io5";
 
 export default function Page() {
@@ -62,6 +64,45 @@ export default function Page() {
           ))}
         </div>
       </section>
+
+      <div className="bg-gradient-to-b from-slate-950 via-slate-950 to-black flex flex-col gap-y-6 py-8 items-center">
+        <h2 className="text-3xl font-bold text-center">Featured Games</h2>
+        <p className="text-slate-300 text-center">Top up your favorite games instantly with secure payment methods</p>
+        <div className="grid grid-cols-3 w-full gap-x-6 gap-y-3 max-w-7xl">
+          {Array.from({ length: 7 }).map((_, id) => (
+            <div key={id} className="flex flex-col gap-y-3 bg-black/40 border border-slate-700 rounded-lg cursor-pointer hover:scale-105 duration-300">
+              <div className="relative">
+                <Image
+                  src="/assets/mobile-legends.jpg"
+                  alt="img"
+                  className="w-full h-50 object-fill rounded-md"
+                  width={1000}
+                  height={1000}
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-purple-900/40 flex flex-col py-4 px-6 justify-between">
+                    <p className="py-2 px-6 rounded-full bg-gradient-to-r from-orange-500 via-yellow-500 to-yellow-300 text-center w-fit text-xs font-semibold">Popular</p>
+                    <div className="flex flex-col gap-y-2">
+                      <h4 className="text-xl font-bold">Mobile Legends</h4>
+                      <p className="text-sm text-slate-400">MOBA</p>
+                    </div>
+                </div>
+              </div>
+              <div className="px-4 py-2 flex flex-col gap-y-3">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-x-2">
+                    <FaStar className="text-yellow-500 size-4" />
+                    <p className="text-sm">4.8</p>
+                  </div>
+                  <IoLogoGameControllerB className="text-purple-900 size-8" />
+                </div>
+                <p className="text-slate-300 text-sm">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias, ducimus.</p>
+                <button className="mt-auto w-full py-2 text-center bg-purple-800 text-xl font-bold cursor-pointer hover:bg-purple-600 duration-300 rounded-md">View Products</button>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button className="w-fit py-2 px-4 text-xl text-slate-400 border border-slate-400 rounded-md cursor-pointer hover:bg-white/20 duration-300">View All Games</button>
+      </div>
     </main>
   )
 }
