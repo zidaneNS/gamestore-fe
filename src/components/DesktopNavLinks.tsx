@@ -17,11 +17,7 @@ export default function DesktopNavLinks() {
         {
             href: "/games",
             label: "Games"
-        },
-        {
-            href: "/products",
-            label: "All Products"
-        },
+        }
     ];
 
     const pathname = usePathname();

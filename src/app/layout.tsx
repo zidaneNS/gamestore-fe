@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scrollbar-thin scrollbar-track-purple-950/40 scrollbar-thumb-purple-800">
       <body
         className={`antialiased ${inter.className}`}
       >
