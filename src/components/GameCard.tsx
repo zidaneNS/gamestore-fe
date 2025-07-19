@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FaStar } from "react-icons/fa";
+import { GoPackage } from "react-icons/go";
 import { IoLogoGameControllerB } from "react-icons/io";
 
 export default function GameCard() {
@@ -27,12 +28,9 @@ export default function GameCard() {
                 </div>
             </div>
             <div className="px-6 py-4 flex flex-col gap-y-3">
-                <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-x-2">
-                        <FaStar className="text-yellow-500 size-4" />
-                        <p className="text-sm">4.8</p>
-                    </div>
-                    <IoLogoGameControllerB className="text-purple-900 size-8" />
+                <div className="flex gap-x-2 items-center bg-blue-500/20 border border-blue-500 rounded-full text-blue-500 w-fit px-4 py-2">
+                    <GoPackage className="size-4" />
+                    <p className="text-sm">3 Products</p>
                 </div>
                 <p className="text-slate-300 text-sm">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Alias, ducimus.</p>
                 <button onClick={() => router.push('/games/1')} className="mt-auto w-full py-2 text-center bg-purple-800 font-bold cursor-pointer hover:bg-purple-600 duration-300 rounded-md">View Products</button>
