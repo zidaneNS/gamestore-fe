@@ -22,7 +22,7 @@ export type Product = {
     game_id: string | number,
     img_url: string,
     buyer_sku_code?: string,
-    type: 'manual' | 'digiflazz',
+    type?: 'manual' | 'digiflazz',
     stock?: number,
 }
 

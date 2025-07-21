@@ -1,14 +1,17 @@
 'use client';
 
 import AddGameForm from "@/components/admin/AddGameForm";
-import FormInputField from "@/components/FormInputField";
-import Modal from "@/components/Modal";
+import AddProductForm from "@/components/admin/AddProductForm";
+import DeleteProductForm from "@/components/admin/DeleteProductForm";
+import EditProductForm from "@/components/admin/EditProductForm";
+import ProductTable from "@/components/admin/ProductTable";
+import RevenueTable from "@/components/admin/RevenueTable";
 import { useState } from "react";
 import { IconType } from "react-icons";
 import { FaRegUser } from "react-icons/fa";
 import { GoPackage } from "react-icons/go";
 import { IoMdAdd } from "react-icons/io";
-import { MdAttachMoney, MdClose } from "react-icons/md";
+import { MdAttachMoney } from "react-icons/md";
 
 export default function AdminPanelContent() {
     type StatType = {
@@ -41,13 +44,19 @@ export default function AdminPanelContent() {
 
     const [isAddGame, setIsAddGame] = useState<boolean>(false);
     const [isAddProduct, setIsAddProduct] = useState<boolean>(false);
-    const [isUpdate, setIsUpdate] = useState<boolean>(false);
+    const [isEdit, setIsEdit] = useState<boolean>(false);
     const [isDelete, setIsDelete] = useState<boolean>(false);
+    const [selectedStat, setSelectedStat] = useState<StatType>(stats[0]);
 
     return (
         <main className="min-h-screen flex justify-center bg-gradient-to-b from-purple-950 to-black relative">
             <div className="absolute inset-0 bg-black/50"></div>
+
             {isAddGame && <AddGameForm setIsAddGame={setIsAddGame} />}
+            {isAddProduct && <AddProductForm setIsAddProduct={setIsAddProduct} />}
+            {isEdit && <EditProductForm setIsEdit={setIsEdit} />}
+            {isDelete && <DeleteProductForm setIsDelete={setIsDelete} />}
+            
             <div className="relative mt-30 flex flex-col gap-y-6 w-7xl">
                 {/* Header */}
                 <section className="w-full flex justify-between items-center">
@@ -60,7 +69,7 @@ export default function AdminPanelContent() {
                             <IoMdAdd className="size-6" />
                             <p>Add Game</p>
                         </button>
-                        <button className="py-2 px-4 rounded-md bg-purple-900 cursor-pointer flex gap-x-2 items-center hover:bg-purple-700 duration-300">
+                        <button onClick={() => setIsAddProduct(true)} className="py-2 px-4 rounded-md bg-purple-900 cursor-pointer flex gap-x-2 items-center hover:bg-purple-700 duration-300">
                             <IoMdAdd className="size-6" />
                             <p>Add Product</p>
                         </button>
@@ -70,7 +79,7 @@ export default function AdminPanelContent() {
                 {/* Stat */}
                 <section className="grid grid-cols-3 w-full gap-x-4">
                     {stats.map((stat, id) => (
-                        <div key={id} className="bg-gradient-to-b from-white/5 to-purple-950/60 border border-purple-950/60 rounded-md px-6 py-4 flex gap-x-4 items-center shadow-xl">
+                        <div onClick={() => setSelectedStat(stat)} key={id} className={`bg-gradient-to-b from-white/5 to-purple-950/60 border border-purple-950/60 rounded-md px-6 py-4 flex gap-x-4 items-center shadow-xl cursor-pointer hover:bg-white/10 duration-300 ${selectedStat.title === stat.title && 'bg-white/10'}`}>
                             <div className={`flex justify-center items-center p-4 rounded-md ${stat.iconColors}`}>
                                 <stat.icon className="size-6" />
                             </div>
@@ -82,52 +91,18 @@ export default function AdminPanelContent() {
                     ))}
                 </section>
 
-                {/* Products */}
-                <div className="flex flex-col gap-y-4 bg-white/5 px-6 py-4 rounded-xl w-full">
-                    <h2 className="text-2xl font-bold">Products Management</h2>
-                    <table className="w-full">
-                        <thead>
-                            <tr className="border-b border-slate-500 text-slate-400">
-                                <td className="p-4 text-left">Product</td>
-                                <td className="p-4 text-left">Game</td>
-                                <td className="p-4 text-left">Price</td>
-                                <td className="p-4 text-left">Status</td>
-                                <td className="p-4 text-left">Actions</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {Array.from({ length: 8 }).map((_, id) => (
-                                <tr key={id} className="border-b border-slate-500">
-                                    <td className="p-4 text-left">
-                                        <div className="flex gap-x-2 items-center">
-                                            <div className="w-14 h-14 rounded-md bg-slate-400"></div>
-                                            <p>56 Diamonds</p>
-                                        </div>
-                                    </td>
-                                    <td className="p-4 text-left">Mobile Legends</td>
-                                    <td className="p-4 text-left">
-                                        <div className="flex flex-col gap-y-2">
-                                            <p>Rp 10000</p>
-                                            <p className="text-sm text-slate-400 line-through">Rp 12000</p>
-                                        </div>
-                                    </td>
-                                    <td className="p-4 text-left">
-                                        <div className="flex gap-x-2 items-center">
-                                            <p className="px-6 py-2 rounded-full bg-gradient-to-r from-orange-500 via-yellow-500 to-yellow-300 w-fit text-xs font-semibold">Popular</p>
-                                            <p className="px-6 py-2 rounded-full bg-red-500 w-fit text-xs font-semibold">Sale</p>
-                                        </div>
-                                    </td>
-                                    <td className="p-4 text-left">
-                                        <div className="flex gap-x-2 items-center">
-                                            <button className="rounded-md py-2 px-4 bg-purple-800 hover:bg-purple-700 duration-300 cursor-pointer">Edit</button>
-                                            <button className="rounded-md py-2 px-4 bg-red-500 hover:bg-red-400 duration-300 cursor-pointer">Delete</button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
+                {/* Stat Details */}
+                {selectedStat.title === stats[0].title ? 
+                    <ProductTable 
+                        setIsEdit={setIsEdit}
+                        setIsDelete={setIsDelete}
+                    />
+                :
+                    <RevenueTable
+                        setIsEdit={setIsEdit}
+                        setIsDelete={setIsDelete}
+                    />
+                }
             </div>
         </main>
     )
