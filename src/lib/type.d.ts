@@ -25,3 +25,8 @@ export type Product = {
     type: 'manual' | 'digiflazz',
     stock?: number,
 }
+
+export type OptionType = {
+    value: string | number,
+    label: string
+}

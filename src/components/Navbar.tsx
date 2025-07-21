@@ -4,7 +4,7 @@ import Link from "next/link";
 
 export default function Navbar() {
     return (
-        <nav className="fixed top-0 w-full py-4 bg-black/40 border-b border-black left-0 z-50 px-6 flex justify-between backdrop-blur-md">
+        <nav className="fixed top-0 w-full py-4 bg-black/40 border-b border-black left-0 z-10 px-6 flex justify-between backdrop-blur-md">
             <div className="flex gap-x-2 items-center cursor-pointer">
                 <FaGamepad className="size-9 text-purple-700" />
                 <h1 className="text-xl font-bold">GameStore</h1>
