@@ -37,7 +37,7 @@ export default function NotificationTableRow() {
                 </div>
             </td>
             <td className="p-4 text-left">
-                <p className="py-2 px-4 w-fit border border-blue-500 text-blue-500 rounded-full bg-blue-800/10">QRIS</p>
+                <p className="py-2 px-4 text-center border border-blue-500 text-blue-500 rounded-full bg-blue-800/10">QRIS</p>
             </td>
             <td className="p-4 text-left">
                 <div className="flex gap-x-2 items-center">

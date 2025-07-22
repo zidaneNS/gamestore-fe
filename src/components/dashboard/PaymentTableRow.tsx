@@ -1,4 +1,4 @@
-export default function RevenueTableRow() {
+export default function PaymentTableRow() {
     return (
         <tr className="border-b border-slate-500">
             <td className="p-4 text-left">
@@ -15,14 +15,9 @@ export default function RevenueTableRow() {
                 </div>
             </td>
             <td className="p-4 text-left">
-                <div className="flex flex-col gap-y-2">
-                    <p>Username: zidane</p>
-                    <p className="text-sm text-slate-300">zidane@example.com</p>
-                </div>
+                <p className="py-2 px-4 text-sm rounded-full bg-yellow-900/30 border border-yellow-300 text-yellow-300 text-center">Pending</p>
             </td>
-            <td className="p-4 text-left">
-                <p className="py-2 px-4 text-sm rounded-full bg-purple-900/30 border border-purple-300 text-purple-300 text-center">QRIS</p>
-            </td>
+            <td className="p-4 text-left">Tue, 22-07-2025 13:15</td>
         </tr>
     )
 }
