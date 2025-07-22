@@ -4,13 +4,16 @@ import AddGameForm from "@/components/admin/AddGameForm";
 import AddProductForm from "@/components/admin/AddProductForm";
 import DeleteProductForm from "@/components/admin/DeleteProductForm";
 import EditProductForm from "@/components/admin/EditProductForm";
+import NotificationTable from "@/components/admin/NotificationTable";
 import ProductTable from "@/components/admin/ProductTable";
 import RevenueTable from "@/components/admin/RevenueTable";
+import UserTable from "@/components/admin/UserTable";
 import { useState } from "react";
 import { IconType } from "react-icons";
+import { CiSearch } from "react-icons/ci";
 import { FaRegUser } from "react-icons/fa";
 import { GoPackage } from "react-icons/go";
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd, IoMdNotifications } from "react-icons/io";
 import { MdAttachMoney } from "react-icons/md";
 
 export default function AdminPanelContent() {
@@ -39,6 +42,12 @@ export default function AdminPanelContent() {
             iconColors: "bg-blue-800",
             title: "Total Users Active",
             value: 160
+        },
+        {
+            icon: IoMdNotifications,
+            iconColors: "bg-red-500",
+            title: "Notifications",
+            value: 16
         }
     ];
 
@@ -49,7 +58,7 @@ export default function AdminPanelContent() {
     const [selectedStat, setSelectedStat] = useState<StatType>(stats[0]);
 
     return (
-        <main className="min-h-screen flex justify-center bg-gradient-to-b from-purple-950 to-black relative">
+        <main className="min-h-screen flex justify-center bg-gradient-to-b from-purple-950 to-black relative pb-8">
             <div className="absolute inset-0 bg-black/50"></div>
 
             {isAddGame && <AddGameForm setIsAddGame={setIsAddGame} />}
@@ -77,7 +86,7 @@ export default function AdminPanelContent() {
                 </section>
 
                 {/* Stat */}
-                <section className="grid grid-cols-3 w-full gap-x-4">
+                <section className="grid grid-cols-4 w-full gap-x-4">
                     {stats.map((stat, id) => (
                         <div onClick={() => setSelectedStat(stat)} key={id} className={`bg-gradient-to-b from-white/5 to-purple-950/60 border border-purple-950/60 rounded-md px-6 py-4 flex gap-x-4 items-center shadow-xl cursor-pointer hover:bg-white/10 duration-300 ${selectedStat.title === stat.title && 'bg-white/10'}`}>
                             <div className={`flex justify-center items-center p-4 rounded-md ${stat.iconColors}`}>
@@ -91,17 +100,23 @@ export default function AdminPanelContent() {
                     ))}
                 </section>
 
+                {/* Search Bar */}
+                <div className="w-2/3 border border-slate-600 rounded-md bg-black/30 flex gap-x-3 items-center py-2 px-3">
+                    <CiSearch className="size-6" />
+                    <input type="text" name="search" id="search" placeholder="Search..." className="w-full bg-transparent outline-none" />
+                </div>
+
                 {/* Stat Details */}
                 {selectedStat.title === stats[0].title ? 
                     <ProductTable 
                         setIsEdit={setIsEdit}
                         setIsDelete={setIsDelete}
                     />
-                :
-                    <RevenueTable
-                        setIsEdit={setIsEdit}
-                        setIsDelete={setIsDelete}
-                    />
+                : selectedStat.title === stats[1].title ?
+                    <RevenueTable />
+                :  selectedStat.title === stats[2].title ? 
+                    <UserTable />
+                : <NotificationTable />
                 }
             </div>
         </main>

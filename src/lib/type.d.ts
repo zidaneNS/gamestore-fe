@@ -3,6 +3,13 @@ export type Category = {
     name: string
 }
 
+export type User = {
+    id: string | number,
+    role_id: string | number,
+    email: string,
+    img_url?: string
+}
+
 export type Game = {
     id: string | number,
     title: string,
