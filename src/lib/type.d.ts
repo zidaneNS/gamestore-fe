@@ -27,10 +27,7 @@ export type Product = {
     price: number,
     original_price?: number,
     game_id: string | number,
-    img_url: string,
-    buyer_sku_code?: string,
-    type?: 'manual' | 'digiflazz',
-    stock?: number,
+    img_url: string
 }
 
 export type OptionType = {
