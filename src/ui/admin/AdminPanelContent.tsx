@@ -4,6 +4,7 @@ import AddGameForm from "@/components/admin/AddGameForm";
 import AddProductForm from "@/components/admin/AddProductForm";
 import DeleteProductForm from "@/components/admin/DeleteProductForm";
 import EditProductForm from "@/components/admin/EditProductForm";
+import GameTable from "@/components/admin/GameTable";
 import NotificationTable from "@/components/admin/NotificationTable";
 import ProductTable from "@/components/admin/ProductTable";
 import RevenueTable from "@/components/admin/RevenueTable";
@@ -11,7 +12,7 @@ import UserTable from "@/components/admin/UserTable";
 import { useState } from "react";
 import { IconType } from "react-icons";
 import { CiSearch } from "react-icons/ci";
-import { FaRegUser } from "react-icons/fa";
+import { FaGamepad, FaRegUser } from "react-icons/fa";
 import { GoPackage } from "react-icons/go";
 import { IoMdAdd, IoMdNotifications } from "react-icons/io";
 import { MdAttachMoney } from "react-icons/md";
@@ -48,6 +49,12 @@ export default function AdminPanelContent() {
             iconColors: "bg-red-500",
             title: "Notifications",
             value: 16
+        },
+        {
+            icon: FaGamepad,
+            iconColors: "bg-slate-500",
+            title: "Games",
+            value: 3
         }
     ];
 
@@ -86,7 +93,7 @@ export default function AdminPanelContent() {
                 </section>
 
                 {/* Stat */}
-                <section className="grid grid-cols-4 w-full gap-x-4">
+                <section className="grid grid-cols-5 w-full gap-x-4">
                     {stats.map((stat, id) => (
                         <div onClick={() => setSelectedStat(stat)} key={id} className={`bg-gradient-to-b from-white/5 to-purple-950/60 border border-purple-950/60 rounded-md px-6 py-4 flex gap-x-4 items-center shadow-xl cursor-pointer hover:bg-white/10 duration-300 ${selectedStat.title === stat.title && 'bg-white/10'}`}>
                             <div className={`flex justify-center items-center p-4 rounded-md ${stat.iconColors}`}>
@@ -116,7 +123,12 @@ export default function AdminPanelContent() {
                     <RevenueTable />
                 :  selectedStat.title === stats[2].title ? 
                     <UserTable />
-                : <NotificationTable />
+                : selectedStat.title === stats[3].title ?
+                    <NotificationTable />
+                :   <GameTable
+                        setIsEdit={setIsEdit}
+                        setIsDelete={setIsDelete}
+                    />
                 }
             </div>
         </main>
