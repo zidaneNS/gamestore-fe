@@ -1,12 +1,13 @@
+'use server';
+
 import GameCard from "@/components/GameCard";
-import Image from "next/image";
+import { getAllGames } from "@/lib/action";
 import { IconType } from "react-icons";
-import { FaRegStar, FaStar } from "react-icons/fa";
+import { FaRegStar } from "react-icons/fa";
 import { FaArrowTrendUp } from "react-icons/fa6";
-import { IoLogoGameControllerB } from "react-icons/io";
 import { IoFlash } from "react-icons/io5";
 
-export default function Page() {
+export default async function Page() {
   type WhyType = {
     icon: IconType,
     iconColors: string,
@@ -34,6 +35,8 @@ export default function Page() {
       description: "Round-the-clock customer support for all your gaming needs"
     },
   ];
+
+  const games = await getAllGames() || [];
 
   return (
     <main className="flex flex-col">
@@ -70,8 +73,8 @@ export default function Page() {
         <h2 className="text-3xl font-bold text-center">Featured Games</h2>
         <p className="text-slate-300 text-center">Top up your favorite games instantly with secure payment methods</p>
         <div className="grid grid-cols-3 w-full gap-x-6 gap-y-3 max-w-7xl">
-          {Array.from({ length: 7 }).map((_, id) => (
-            <GameCard key={id} />
+          {games.map((game, id) => (
+            <GameCard key={id} game={game} />
           ))}
         </div>
         <button className="w-fit py-2 px-4 text-xl text-slate-400 border border-slate-400 rounded-md cursor-pointer hover:bg-white/20 duration-300">View All Games</button>

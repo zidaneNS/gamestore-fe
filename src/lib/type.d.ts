@@ -19,9 +19,10 @@ export type Game = {
     id: string | number,
     title: string,
     description: string,
-    category_id: string | number,
+    category: Category,
     img_url: string,
-    currency_name: string
+    currency_name: string,
+    products: Product[]
 }
 
 export type Product = {
@@ -29,14 +30,14 @@ export type Product = {
     amount: number,
     price: number,
     original_price?: number,
-    game_id: string | number,
+    game: Game,
     img_url: string
 }
 
 export type Order = {
     id: string | number,
-    user_id: string | number,
-    product_id: string | number,
+    user: User,
+    product: Product,
     status: Status
 }
 
