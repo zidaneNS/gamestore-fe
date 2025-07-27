@@ -4,7 +4,8 @@ import { fetchData } from "@/lib/action";
 import { LoginDto } from "@/lib/dto";
 import { LoginFormSchema } from "@/lib/formSchema";
 import { LoginFormState, User } from "@/lib/type"
-import React, { createContext, useContext, useState } from "react"
+import { useRouter } from "next/navigation";
+import React, { createContext, useContext, useEffect, useState } from "react"
 
 export type AuthContextType = {
     user: User | null,
@@ -33,6 +34,7 @@ export default function useAuth() {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
+    const router = useRouter();
 
     const login = async (state: LoginFormState, formData: FormData) => {
         const validatedFields = LoginFormSchema.safeParse({
@@ -55,10 +57,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             if ('message' in result) {
                 return { message: result.message }
             } else {
-                setUser(result)
+                setUser(result);
+                router.back();
             }
         }
     }
+
+    useEffect(() => {
+        const getUser = async () => {
+            const user = await fetchData<User>('user', { method: 'GET' }, true);
+            console.log('failed', user);
+            if (user) {
+                if (typeof user === 'object' && 'email' in user) {
+                    console.log('success', user);
+                    setUser(user);
+                }
+            }
+        }
+
+        getUser();
+    }, []);
 
     return <authContext.Provider value={{ login, user }}>{children}</authContext.Provider>
 }

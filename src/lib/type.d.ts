@@ -53,3 +53,8 @@ export type LoginFormState = | {
     },
     message?: string
 } | undefined
+
+export type SessionPayload = {
+    token: string,
+    expiresAt: Date
+}
