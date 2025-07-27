@@ -1,7 +1,14 @@
+'use server';
+
 import GameCard from "@/components/GameCard";
+import { getAllGames } from "@/lib/action";
+import { Game } from "@/lib/type";
 import { CiFilter, CiSearch } from "react-icons/ci";
 
-export default function Page() {
+export default async function Page() {
+
+    const games: Game[] = await getAllGames() || [];
+    
     return (
         <main className="bg-gradient-to-b from-purple-950 to-black relative min-h-screen flex justify-center">
             <div className="inset-0 absolute bg-black/50"></div>
@@ -35,8 +42,8 @@ export default function Page() {
 
                 <section className="w-full overflow-y-auto h-screen pr-4 scrollbar-thin">
                     <div className="grid grid-cols-3 w-full gap-x-8 gap-y-4 py-4">
-                        {Array.from({ length: 12 }).map((_, id) => (
-                            <GameCard key={id} />
+                        {games.map((game, id) => (
+                            <GameCard key={id} game={game} />
                         ))}
                     </div>
                 </section>

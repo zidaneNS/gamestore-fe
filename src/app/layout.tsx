@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,10 +24,12 @@ export default function RootLayout({
       <body
         className={`antialiased ${inter.className}`}
       >
-        <div className="min-h-screen flex flex-col bg-black text-white relative">
-          <Navbar />
-          {children}
-        </div>
+        <AuthProvider>
+          <div className="min-h-screen flex flex-col bg-black text-white relative">
+            <Navbar />
+            {children}
+          </div>
+        </AuthProvider>
       </body>
     </html>
   );

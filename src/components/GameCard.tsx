@@ -32,7 +32,7 @@ export default function GameCard({ game }: { game: Game }) {
                     <p className="text-sm">{game.products.length} Products</p>
                 </div>
                 <p className="text-slate-300 text-sm">{game.description}</p>
-                <button onClick={() => router.push('/games/1')} className="mt-auto w-full py-2 text-center bg-purple-800 font-bold cursor-pointer hover:bg-purple-600 duration-300 rounded-md">View Products</button>
+                <button onClick={() => router.push(`games/${game.id}`)} className="mt-auto w-full py-2 text-center bg-purple-800 font-bold cursor-pointer hover:bg-purple-600 duration-300 rounded-md">View Products</button>
             </div>
         </div>
     )
