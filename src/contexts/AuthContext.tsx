@@ -18,12 +18,14 @@ export type AuthContextType = {
     } | {
         message: string;
         errors?: undefined;
-    } | undefined>
+    } | undefined>,
+    logout: () => Promise<void>
 }
 
 const initContext: AuthContextType = {
     user: null,
-    login: async () => undefined
+    login: async () => undefined,
+    logout: async () => {}
 }
 
 const authContext = createContext(initContext);
@@ -63,6 +65,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
     }
 
+    const logout = async () => {
+        try {
+            const response = await fetch('api/logout', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (response.status === 204) {
+                setUser(null);
+            }
+        } catch (err) {
+            console.log('error logout', err);
+        }
+    }
+
     useEffect(() => {
         const getUser = async () => {
             const user = await fetchData<User>('user', { method: 'GET' }, true);
@@ -78,5 +98,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         getUser();
     }, []);
 
-    return <authContext.Provider value={{ login, user }}>{children}</authContext.Provider>
+    return <authContext.Provider value={{ login, user, logout }}>{children}</authContext.Provider>
 }
