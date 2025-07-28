@@ -1,17 +1,32 @@
 'use client';
 
+import useAuth from "@/contexts/AuthContext";
 import { Game, Product } from "@/lib/type";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
+import { MdClose } from "react-icons/md";
+import { toast } from "sonner";
 
 export default function GameDetailContent({
     game
 }: {
     game: Game
 }) {
-    const [selectedProduct, setSelectedProduct] = useState<Product | null>();
+    const { user } = useAuth();
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+    const router = useRouter();
+
+    const handleCheckout = async () => {
+        if (!user) {
+            router.push('/login');
+        }
+        if (!selectedProduct) {
+            toast.error('select your product!');
+        }
+    }
 
     return (
         <div className="flex flex-col gap-y-4 w-full">
@@ -67,7 +82,7 @@ export default function GameDetailContent({
                         <p>7 mins - 10 mins</p>
                     </div>
                     <p className="w-full text-right text-xl font-bold">Total: Rp {selectedProduct?.price || 0}</p>
-                    <div className="w-full py-2 rounded-md text-center font-bold bg-green-700 cursor-pointer hover:bg-green-500 duration-300">Checkout</div>
+                    <button onClick={handleCheckout} className="w-full py-2 rounded-md text-center font-bold bg-green-700 cursor-pointer hover:bg-green-500 duration-300">Checkout</button>
                 </div>
             </div>
         </div>

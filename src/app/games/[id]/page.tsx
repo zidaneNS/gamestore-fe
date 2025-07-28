@@ -3,10 +3,7 @@
 import { getGame } from "@/lib/action";
 import { Game } from "@/lib/type";
 import GameDetailContent from "@/ui/games/GameDetailContent";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { IoIosArrowRoundBack } from "react-icons/io";
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
     const id = (await params).id;

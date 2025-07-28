@@ -26,7 +26,10 @@ import { Game } from "./type";
 
 const origin = 'http://localhost:3000';
 
-export const fetchData = async <T>(endpoint: string, options?: RequestInit, isFormReq: boolean = false): Promise<T | { message: string } | null> => {
+export function fetchData<T>(endpoint: string, options?: RequestInit, isFormReq?: false): Promise<T | null>
+export function fetchData<T>(endpoint: string, options?: RequestInit, isFormReq?: true): Promise<T | { message: string }>
+
+export async function fetchData<T>(endpoint: string, options?: RequestInit, isFormReq: boolean = false): Promise<T | { message: string } | null> {
     try {
         const response = await fetch(`${!isFormReq ? origin : ""}/api/${endpoint}`, {
             headers: {
