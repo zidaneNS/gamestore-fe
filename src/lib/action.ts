@@ -31,7 +31,8 @@ export function fetchData<T>(endpoint: string, options?: RequestInit, isFormReq?
 
 export async function fetchData<T>(endpoint: string, options?: RequestInit, isFormReq: boolean = false): Promise<T | { message: string } | null> {
     try {
-        const response = await fetch(`${!isFormReq ? origin : ""}/api/${endpoint}`, {
+        const originUrl = typeof window !== 'undefined' ? window.origin : origin;
+        const response = await fetch(`${originUrl}/api/${endpoint}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
@@ -41,7 +42,7 @@ export async function fetchData<T>(endpoint: string, options?: RequestInit, isFo
         });
 
         const data = await response.json();
-        if (response.status === 200) {
+        if (response.status === 200 || response.status === 201) {
             return data as T;
         } else {
             if (isFormReq) {
@@ -63,3 +64,5 @@ export const getAllGames = async () => fetchData<Game[]>('games', {
 });
 
 export const getGame = async (id: string | number) => fetchData<Game>(`games/${id}`);
+
+export const checkoutProduct = async (id: string | number) => fetchData<{ snapToken: string }>(`checkout/${id}`);

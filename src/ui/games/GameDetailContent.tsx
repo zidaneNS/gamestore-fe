@@ -1,13 +1,13 @@
 'use client';
 
 import useAuth from "@/contexts/AuthContext";
+import { checkoutProduct } from "@/lib/action";
 import { Game, Product } from "@/lib/type";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { MdClose } from "react-icons/md";
 import { toast } from "sonner";
 
 export default function GameDetailContent({
@@ -19,15 +19,35 @@ export default function GameDetailContent({
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
     const router = useRouter();
 
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
+        script.setAttribute('data-client-key', process.env.NEXT_PUBLIC_SNAP_CLIENT_KEY!);
+        document.head.appendChild(script);
+
+        return () => {
+            document.head.removeChild(script);
+        }
+    }, []);
+
     const handleCheckout = async () => {
         if (!user) {
             router.push('/login');
         }
         if (!selectedProduct) {
             toast.error('select your product!');
+            return
+        }
+
+        console.log('pre checkout')
+        const result = await checkoutProduct(selectedProduct.id);
+        
+        if (result) {
+            const { snapToken } = result;
+            window.snap.pay(snapToken);
         }
     }
-
+    
     return (
         <div className="flex flex-col gap-y-4 w-full">
             <Link href="/games" className="flex gap-x-2 items-center cursor-pointer hover:text-white/70 duration-300">

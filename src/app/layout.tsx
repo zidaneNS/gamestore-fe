@@ -27,7 +27,7 @@ export default function RootLayout({
       >
         <AuthProvider>
           <div className="min-h-screen flex flex-col bg-black text-white relative">
-            <Toaster position="top-center" closeButton richColors/>
+            <Toaster position="top-right" closeButton richColors/>
             <Navbar />
             {children}
           </div>
