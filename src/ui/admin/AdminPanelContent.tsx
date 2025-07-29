@@ -9,6 +9,8 @@ import NotificationTable from "@/components/admin/NotificationTable";
 import ProductTable from "@/components/admin/ProductTable";
 import RevenueTable from "@/components/admin/RevenueTable";
 import UserTable from "@/components/admin/UserTable";
+import useAuth from "@/contexts/AuthContext";
+import { redirect } from "next/navigation";
 import { useState } from "react";
 import { IconType } from "react-icons";
 import { CiSearch } from "react-icons/ci";
@@ -18,6 +20,12 @@ import { IoMdAdd, IoMdNotifications } from "react-icons/io";
 import { MdAttachMoney } from "react-icons/md";
 
 export default function AdminPanelContent() {
+    const { user } = useAuth();
+
+    if (user) {
+        return redirect('/');
+    }
+    
     type StatType = {
         icon: IconType,
         iconColors: string,
