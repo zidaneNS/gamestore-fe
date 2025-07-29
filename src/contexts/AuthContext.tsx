@@ -1,30 +1,23 @@
 'use client';
 
 import { fetchData } from "@/lib/action";
-import { LoginDto } from "@/lib/dto";
-import { LoginFormSchema } from "@/lib/formSchema";
-import { LoginFormState, User } from "@/lib/type"
+import { LoginDto, RegisterDto } from "@/lib/dto";
+import { LoginFormSchema, RegisterFormSchema } from "@/lib/formSchema";
+import { LoginFormState, RegisterFormState, User } from "@/lib/type"
 import { useRouter } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react"
 
 export type AuthContextType = {
     user: User | null,
-    login: (state: LoginFormState, formData: FormData) => Promise<{
-        errors: {
-            email?: string[] | undefined;
-            password?: string[] | undefined;
-        };
-        message?: undefined;
-    } | {
-        message: string;
-        errors?: undefined;
-    } | undefined>,
-    logout: () => Promise<void>
+    login: (state: LoginFormState, formData: FormData) => Promise<LoginFormState>,
+    register: (state: RegisterFormState, formData: FormData) => Promise<RegisterFormState>,
+    logout: () => Promise<void>,
 }
 
 const initContext: AuthContextType = {
     user: null,
     login: async () => undefined,
+    register: async () => undefined,
     logout: async () => {}
 }
 
@@ -55,14 +48,44 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             body: JSON.stringify(loginDto)
         }, true);
 
-        if (result) {
-            if ('message' in result) {
-                return { message: result.message }
-            } else {
-                setUser(result);
-                router.back();
-            }
+        if ('message' in result) {
+            return { message: result.message }
+        } else {
+            setUser(result);
+            router.back();
         }
+    }
+
+    const register = async (state: RegisterFormState, formData: FormData) => {
+        const validatedFields = RegisterFormSchema.safeParse({
+            name: formData.get('name'),
+            email: formData.get('email'),
+            password: formData.get('password'),
+            password_confirmation: formData.get('password_confirmation'),
+        });
+
+        if (!validatedFields.success) {
+            return { errors: validatedFields.error.flatten().fieldErrors }
+        }
+
+        const { name, email, password, password_confirmation } = validatedFields.data;
+
+        if (password !== password_confirmation) {
+            return { message: 'password does not match' }
+        }
+
+        const registerDto: RegisterDto = { name, email, role: 'user', password, password_confirmation };
+
+        const result = await fetchData<User>('register', {
+            method: 'POST',
+            body: JSON.stringify(registerDto)
+        }, true);
+
+        if ('message' in result) {
+            return { message: result.message }
+        }
+
+        router.push('/login');
     }
 
     const logout = async () => {
@@ -98,5 +121,5 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         getUser();
     }, []);
 
-    return <authContext.Provider value={{ login, user, logout }}>{children}</authContext.Provider>
+    return <authContext.Provider value={{ login, register, user, logout }}>{children}</authContext.Provider>
 }

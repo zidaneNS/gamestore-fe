@@ -58,3 +58,13 @@ export type SessionPayload = {
     token: string,
     expiresAt: Date
 }
+
+export type RegisterFormState = | {
+    errors?: {
+        name?: string[],
+        email?: string[],
+        password?: string[],
+        password_confirmation?: string[]
+    },
+    message?: string
+} | undefined

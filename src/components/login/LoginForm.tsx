@@ -1,15 +1,21 @@
 'use client';
 
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { IoMdArrowBack } from "react-icons/io";
 import FormInputField from "../FormInputField";
 import Link from "next/link";
 import useAuth from "@/contexts/AuthContext";
 import { useActionState } from "react";
+import FormErrorField from "../FormErrorField";
 
 export default function LoginForm() {
+    const { login, user } = useAuth();
+
+    if (user) {
+        return redirect('/');
+    }
+
     const router = useRouter();
-    const { login } = useAuth();
 
     const [state, action, pending] = useActionState(login, undefined);
 
@@ -29,15 +35,15 @@ export default function LoginForm() {
                     type="email"
                     placeholder="Enter your email"
                 />
-                {state?.errors?.email && <p className="text-sm font-bold text-red-500 py-2 px-4 rounded-md bg-red-500/10">{state.errors.email}</p>}
+                {state?.errors?.email && <FormErrorField>{state.errors.email}</FormErrorField>}
                 <FormInputField
                     title="Password"
                     name="password"
                     type="password"
                     placeholder="Enter your password"
                     />
-                {state?.errors?.password && <p className="text-sm font-bold text-red-500 py-2 px-4 rounded-md bg-red-500/10">{state.errors.password}</p>}
-                {state?.message && <p className="text-sm font-bold text-red-500 py-2 px-4 rounded-md bg-red-500/10">{state.message}</p>}
+                {state?.errors?.password && <FormErrorField>{state.errors.password}</FormErrorField>}
+                {state?.message && <FormErrorField>{state.message}</FormErrorField>}
 
                 { pending ? (
                     <p className="w-full text-center">Loading...</p>
